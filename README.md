@@ -1,6 +1,6 @@
 # statement-exporter
 
-Parses bank e-statement PDFs and writes the data to Google Sheets. Currently supports Jenius. Designed to be extended for other banks.
+Parses bank e-statement PDFs and writes the data to Google Sheets. Currently supports Blu (BCA Digital) and Jenius. Designed to be extended for other banks.
 
 ## Requirements
 
@@ -38,9 +38,10 @@ Each PDF creates a tab in the spreadsheet named after the PDF file. Re-running w
 
 | Prefix | Bank |
 |--------|------|
+| `blu_` | Blu by BCA Digital |
 | `jenius_` | Jenius (PT Bank SMBC Indonesia) |
 
-Example: `jenius_may2026.pdf`
+Examples: `blu_jan2025.pdf`, `jenius_may2026.pdf`
 
 PDFs with an unrecognised prefix are skipped with a warning.
 

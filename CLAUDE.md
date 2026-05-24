@@ -36,6 +36,14 @@ Optional flags:
 
 Each bank parser is intentionally self-contained with its own parsing logic. Do not attempt to share or generalise parsing code across parsers — PDF layouts differ per bank and any shared abstraction will break under the next bank's format.
 
+## Blu parser notes
+
+The Blu PDF (BCA Digital) has embedded text, parsed via `pdfplumber`. Words are grouped into visual rows using a **scan approach** with Y_TOLERANCE = 3px: words within 3px of each other vertically are treated as the same row. This is tighter than a rounding grid because within-row words are ~2.5px apart while adjacent rows are ~5px apart.
+
+Column boundaries: `date_time` (x < 140), `details` (140–405), `amount` (405–500), `balance` (≥ 500). Amount uses Indonesian number format — `.` as thousands separator, `,` as decimal — so `1.234.567,00` → 1234567.
+
+Each transaction block starts with a date row (`DD Mon YYYY` at x < 140). The block contains: date+description row → amount row → time row → bank/notes row(s). The bank/notes line uses ` - ` to separate bank from notes, and ` | ` to separate notes from the transaction ID. Page footers and the last-page disclaimer section are detected and skipped.
+
 ## Jenius parser notes
 
 The Jenius PDF has embedded text (Qt-generated, not scanned), parsed via `pdfplumber` using word x-coordinates to assign words to columns: `date_time` (x < 130), `details` (130–325), `notes` (325–525), `amount` (≥ 525). The threshold is 525 (not 530) to catch `+`/`-` signs that shift left for large amounts. A lone `+` or `-` in the notes column is merged into `amount_raw` in `parse_block`.

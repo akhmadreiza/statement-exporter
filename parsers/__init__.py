@@ -1,8 +1,10 @@
+from .blu import BluParser
 from .jenius import JeniusParser
 
 # Maps filename prefix (lowercase) to parser class.
 # To add a new bank, create parsers/<bank>.py and register it here.
 REGISTRY: dict[str, type] = {
+    'blu': BluParser,
     'jenius': JeniusParser,
 }
 
